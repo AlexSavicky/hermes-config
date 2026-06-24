@@ -133,7 +133,11 @@
 
 **rutracker — поиск и загрузка торрентов:**
 
-Твои креды в `~/.hermes/.env` (RUTRACKER_USER, RUTRACKER_PASS).
+Креды лежат в `/root/.hermes/.env`. Читай их через `grep`:
+```
+RUTRACKER_USER=$(grep RUTRACKER_USER /root/.hermes/.env | cut -d= -f2)
+RUTRACKER_PASS=$(grep RUTRACKER_PASS /root/.hermes/.env | cut -d= -f2)
+```
 
 Когда владелец просит «найди фильм X»:
 
