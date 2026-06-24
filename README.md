@@ -26,9 +26,19 @@ wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/AGENTS.md
 wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/SOUL.md
 wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/MEMORY.md -O memories/MEMORY.md
 
-# Настроить память в config.yaml:
-hermes config set memory.memory_enabled true
-hermes config set memory.memory_char_limit 4000
+## Память (гибридная)
+
+Hermes использует трёхслойную гибридную память:
+1. **MEMORY.md** — критические факты всегда в контексте (in-context, ~800 токенов)
+2. **Holographic** — FTS5 keyword + HRR semantic + trust scoring (внешний провайдер)
+3. **Session Search** — полная история всех диалогов (SQLite, безлимитно)
+
+```bash
+# Включить Holographic (SQLite, без зависимостей):
+hermes config set memory.provider holographic
+hermes config set plugins.hermes-memory-store.auto_extract true
+hermes memory status   # проверить что активно
+```
 
 # Настроить SSH на хост PVE:
 ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
