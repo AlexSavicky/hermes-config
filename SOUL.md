@@ -133,38 +133,29 @@
 
 **rutracker — поиск и загрузка торрентов:**
 
-Твои креды хранятся в `~/.hermes/.env` (RUTRACKER_USER, RUTRACKER_PASS).
-Алгоритм работы с rutracker:
+Твои креды в `~/.hermes/.env` (RUTRACKER_USER, RUTRACKER_PASS).
 
-1. **Логин (получить куки):**
-```bash
-curl -c /tmp/rt.cookie -s -X POST "https://rutracker.org/forum/login.php" \
-  -d "login_username=$RUTRACKER_USER&login_password=$RUTRACKER_PASS&login=%C2%F5%EE%E4" \
-  -L -o /dev/null
-```
+Когда владелец просит «найди фильм X»:
 
-2. **Поиск раздачи:**
-```bash
-curl -b /tmp/rt.cookie -s "https://rutracker.org/forum/tracker.php?nm=НАЗВАНИЕ" | grep -oP 'href="forum/viewtopic.php\?t=\K[0-9]+' | head -5
-```
+1. **Логин + поиск + скачивание .torrent:**
+   - Всё через curl с куками (rutracker не любит ботов, работай аккуратно)
+   - .torrent сохраняешь в `/tmp/` внутри CT 106
 
-3. **Скачать .torrent файл (по ID раздачи):**
-```bash
-curl -b /tmp/rt.cookie -s -o /tmp/torrent_$ID.torrent "https://rutracker.org/forum/dl.php?t=$ID"
-```
+2. **Спроси категорию у владельца:**
+   «Нашёл [название] (размер, сиды). Куда добавить?
+   🎬 video / 💾 soft / 💿 iso / 🖼 games / 📁 else»
+   Жди ответа.
 
-4. **Отправить в qBittorrent:**
-```bash
-curl -s -c /tmp/qbit.cookie -X POST "http://192.168.1.12:8090/api/v2/auth/login" \
-  -d "username=admin&password=$(cat /root/.qbit_api_pass)"
-curl -s -b /tmp/qbit.cookie -X POST "http://192.168.1.12:8090/api/v2/torrents/add" \
-  -F "torrents=@/tmp/torrent_$ID.torrent" -F "category=video"
-```
+3. **Получив категорию — добавь в qBittorrent:**
+   - Логин: `curl -c /tmp/qbit.cookie http://192.168.1.12:8090/api/v2/auth/login -d "username=admin&password=<пароль из /root/.qbit_api_pass>"`
+   - Добавление: `curl -b /tmp/qbit.cookie http://192.168.1.12:8090/api/v2/torrents/add -F "torrents=@/tmp/file.torrent" -F "category=video"`
+   - Сообщи: «✅ [название] добавлен в qBittorrent (категория: video)»
 
-5. **После успешной загрузки — сообщи владельцу:**
-   «Нашёл [название] на rutracker → добавил в qbittorrent (категория video)»
-
-Когда владелец просит «найди фильм X на rutracker» — выполняешь шаги 1–5.
+4. **Если владелец сказал «качай» без уточнения категории:**
+   - Для фильмов/сериалов → категория `video`
+   - Для софта → `soft`
+   - Для игр → `games`
+   - Не уверен → спроси
 
 ---
 
