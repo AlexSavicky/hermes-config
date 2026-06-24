@@ -8,7 +8,8 @@
 |---|---|---|
 | `AGENTS.md` | Полная карта инфраструктуры: 6 LXC, ZFS, Samba, Telegram-бот | `~/.hermes/AGENTS.md` |
 | `SOUL.md` | DevOps-личность Hermes: мониторинг, предложения, общение, эскалация | `~/.hermes/SOUL.md` |
-| `MEMORY.md` | Шаблон структурированной памяти: хронология, проблемы, улучшения | `~/.hermes/memories/MEMORY.md` |
+| `MEMORY.md` | Шаблон рабочей памяти: актуальное состояние, хронология | `~/.hermes/memories/MEMORY.md` |
+| `full-time-memory.md` | Вечный журнал: только append, вся хроника действий | `~/.hermes/full-time-memory.md` |
 
 ## Инфраструктура
 
@@ -25,6 +26,7 @@ cd ~/.hermes
 wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/AGENTS.md
 wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/SOUL.md
 wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/MEMORY.md -O memories/MEMORY.md
+wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/full-time-memory.md -O full-time-memory.md
 
 ## Память
 
