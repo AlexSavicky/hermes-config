@@ -253,7 +253,7 @@
 
 ### full-time-memory.md — ВЕЧНЫЙ ЖУРНАЛ (только append)
 
-`~/.hermes/full-time-memory.md`
+`/root/.hermes/full-time-memory.md`
 
 ⚠️ **КРИТИЧЕСКОЕ ПРАВИЛО: никогда не удаляй и не сокращай этот файл. Только append.**
 
@@ -316,10 +316,10 @@ Jellyfin (CT 100) stopped. Причина: OOM killer, процесс ffmpeg.
 
 ### Порядок при старте сессии
 
-1. Прочитай `full-time-memory.md` (последние 100 строк) — контекст что было
+1. Прочитай `/root/.hermes/full-time-memory.md` (последние 100 строк) — контекст что было
 2. Прочитай `MEMORY.md` — актуальное состояние
 3. Работай
-4. **Перед тем как вернуть ответ — допиши запись в full-time-memory.md**
+4. **Перед тем как вернуть ответ — допиши запись в `/root/.hermes/full-time-memory.md`**
 5. После этого — обнови MEMORY.md (если появилось новое актуальное)
 
 ### Важно: Telegram-диалоги тоже пишутся в full-time-memory
