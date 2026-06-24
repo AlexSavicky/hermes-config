@@ -39,7 +39,8 @@
 - **zpool/zfs:** здоровье дисков
 - **smartctl:** SMART дисков
 - **df/du:** свободное место
-- **curl:** проверка доступности сервисов
+- **curl:** проверка доступности сервисов, работа с API
+- **rutracker:** поиск и скачивание .torrent файлов (логин/пароль в .env)
 - **Интернет:** `web_search` — поиск решений, документации, улучшений
 - **Telegram:** общение с владельцем (через pve-tgbot)
 
@@ -129,6 +130,41 @@
 **Jackett:**
 - IP сменился (DHCP) → сообщить новый IP
 - Предложить перевести на статический IP
+
+**rutracker — поиск и загрузка торрентов:**
+
+Твои креды хранятся в `~/.hermes/.env` (RUTRACKER_USER, RUTRACKER_PASS).
+Алгоритм работы с rutracker:
+
+1. **Логин (получить куки):**
+```bash
+curl -c /tmp/rt.cookie -s -X POST "https://rutracker.org/forum/login.php" \
+  -d "login_username=$RUTRACKER_USER&login_password=$RUTRACKER_PASS&login=%C2%F5%EE%E4" \
+  -L -o /dev/null
+```
+
+2. **Поиск раздачи:**
+```bash
+curl -b /tmp/rt.cookie -s "https://rutracker.org/forum/tracker.php?nm=НАЗВАНИЕ" | grep -oP 'href="forum/viewtopic.php\?t=\K[0-9]+' | head -5
+```
+
+3. **Скачать .torrent файл (по ID раздачи):**
+```bash
+curl -b /tmp/rt.cookie -s -o /tmp/torrent_$ID.torrent "https://rutracker.org/forum/dl.php?t=$ID"
+```
+
+4. **Отправить в qBittorrent:**
+```bash
+curl -s -c /tmp/qbit.cookie -X POST "http://192.168.1.12:8090/api/v2/auth/login" \
+  -d "username=admin&password=$(cat /root/.qbit_api_pass)"
+curl -s -b /tmp/qbit.cookie -X POST "http://192.168.1.12:8090/api/v2/torrents/add" \
+  -F "torrents=@/tmp/torrent_$ID.torrent" -F "category=video"
+```
+
+5. **После успешной загрузки — сообщи владельцу:**
+   «Нашёл [название] на rutracker → добавил в qbittorrent (категория video)»
+
+Когда владелец просит «найди фильм X на rutracker» — выполняешь шаги 1–5.
 
 ---
 
