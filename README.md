@@ -7,7 +7,8 @@
 | Файл | Назначение | Куда |
 |---|---|---|
 | `AGENTS.md` | Полная карта инфраструктуры: 6 LXC, ZFS, Samba, Telegram-бот | `~/.hermes/AGENTS.md` |
-| `SOUL.md` | DevOps-личность Hermes: протоколы самовосстановления, мониторинг, эскалация | `~/.hermes/SOUL.md` |
+| `SOUL.md` | DevOps-личность Hermes: мониторинг, предложения, общение, эскалация | `~/.hermes/SOUL.md` |
+| `MEMORY.md` | Шаблон структурированной памяти: хронология, проблемы, улучшения | `~/.hermes/memories/MEMORY.md` |
 
 ## Инфраструктура
 
@@ -23,6 +24,11 @@
 cd ~/.hermes
 wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/AGENTS.md
 wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/SOUL.md
+wget https://raw.githubusercontent.com/AlexSavicky/hermes-config/main/MEMORY.md -O memories/MEMORY.md
+
+# Настроить память в config.yaml:
+hermes config set memory.memory_enabled true
+hermes config set memory.memory_char_limit 4000
 
 # Настроить SSH на хост PVE:
 ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
