@@ -13,31 +13,31 @@ version: 1.0
 
 ### Проверка открытых портов
 ```bash
-ssh root@192.168.1.1 "ss -tlnp | grep LISTEN"
+ssh root@192.168.1.202 "ss -tlnp | grep LISTEN"
 ```
 Ожидаемые порты: 22 (SSH), 8006 (Proxmox), 3128 (pveproxy).
 Если видишь 0.0.0.0:* — это порт открыт наружу. Проверь зачем.
 
 ### Проверка неудачных логинов
 ```bash
-ssh root@192.168.1.1 "faillock --user root"
-ssh root@192.168.1.1 "grep 'Failed password' /var/log/auth.log | tail -20"
+ssh root@192.168.1.202 "faillock --user root"
+ssh root@192.168.1.202 "grep 'Failed password' /var/log/auth.log | tail -20"
 ```
 
 ### Проверка sudo-доступа
 ```bash
-ssh root@192.168.1.1 "grep -v '^#' /etc/sudoers | grep -v '^$'"
+ssh root@192.168.1.202 "grep -v '^#' /etc/sudoers | grep -v '^$'"
 ```
 
 ### Неиспользуемые пакеты
 ```bash
-ssh root@192.168.1.1 "apt autoremove --dry-run"
-ssh root@192.168.1.1 "deborphan 2>/dev/null || echo 'deborphan not installed'"
+ssh root@192.168.1.202 "apt autoremove --dry-run"
+ssh root@192.168.1.202 "deborphan 2>/dev/null || echo 'deborphan not installed'"
 ```
 
 ### Срок действия сертификатов
 ```bash
-ssh root@192.168.1.1 "find /etc/pve -name '*.pem' -exec openssl x509 -enddate -noout -in {} \; 2>/dev/null"
+ssh root@192.168.1.202 "find /etc/pve -name '*.pem' -exec openssl x509 -enddate -noout -in {} \; 2>/dev/null"
 ```
 
 ## Очистка системы
@@ -45,31 +45,31 @@ ssh root@192.168.1.1 "find /etc/pve -name '*.pem' -exec openssl x509 -enddate -n
 ### Логи
 ```bash
 # Очистить journal старше 7 дней
-ssh root@192.168.1.1 "journalctl --vacuum-time=7d"
+ssh root@192.168.1.202 "journalctl --vacuum-time=7d"
 # Размер journal
-ssh root@192.168.1.1 "journalctl --disk-usage"
+ssh root@192.168.1.202 "journalctl --disk-usage"
 ```
 
 ### Пакеты
 ```bash
-ssh root@192.168.1.1 "apt autoremove -y"
-ssh root@192.168.1.1 "apt autoclean"
+ssh root@192.168.1.202 "apt autoremove -y"
+ssh root@192.168.1.202 "apt autoclean"
 ```
 
 ### Кэш apt
 ```bash
-ssh root@192.168.1.1 "du -sh /var/cache/apt/archives/"
+ssh root@192.168.1.202 "du -sh /var/cache/apt/archives/"
 ```
 
 ### Старые ядра (на Proxmox)
 ```bash
-ssh root@192.168.1.1 "dpkg -l | grep -E 'linux-image|linux-headers' | grep -v $(uname -r)"
+ssh root@192.168.1.202 "dpkg -l | grep -E 'linux-image|linux-headers' | grep -v $(uname -r)"
 ```
 
 ### Временные файлы
 ```bash
-ssh root@192.168.1.1 "find /tmp -type f -atime +7 -delete 2>/dev/null"
-ssh root@192.168.1.1 "find /var/tmp -type f -atime +30 -delete 2>/dev/null"
+ssh root@192.168.1.202 "find /tmp -type f -atime +7 -delete 2>/dev/null"
+ssh root@192.168.1.202 "find /var/tmp -type f -atime +30 -delete 2>/dev/null"
 ```
 
 ## Оптимизация
@@ -77,34 +77,34 @@ ssh root@192.168.1.1 "find /var/tmp -type f -atime +30 -delete 2>/dev/null"
 ### Автообновления безопасности
 ```bash
 # Проверить установлен ли unattended-upgrades
-ssh root@192.168.1.1 "dpkg -l unattended-upgrades | grep -E '^ii'"
+ssh root@192.168.1.202 "dpkg -l unattended-upgrades | grep -E '^ii'"
 # Если нет — предложить установить (только security updates)
 ```
 
 ### Проверка SWAP использования
 ```bash
-ssh root@192.168.1.1 "free -h | grep Swap"
+ssh root@192.168.1.202 "free -h | grep Swap"
 # Если swap > 0 при достаточном RAM — проверить swappiness
-ssh root@192.168.1.1 "cat /proc/sys/vm/swappiness"
+ssh root@192.168.1.202 "cat /proc/sys/vm/swappiness"
 ```
 
 ### ZFS ARC кэш
 ```bash
-ssh root@192.168.1.1 "arc_summary | grep -E 'ARC size|hit ratio' | head -5"
+ssh root@192.168.1.202 "arc_summary | grep -E 'ARC size|hit ratio' | head -5"
 ```
 
 ### Smartctl короткий тест (ежемесячно)
 ```bash
-ssh root@192.168.1.1 "smartctl -t short /dev/sda"
-ssh root@192.168.1.1 "smartctl -t short /dev/sdb"
-ssh root@192.168.1.1 "smartctl -t short /dev/sdc"
+ssh root@192.168.1.202 "smartctl -t short /dev/sda"
+ssh root@192.168.1.202 "smartctl -t short /dev/sdb"
+ssh root@192.168.1.202 "smartctl -t short /dev/sdc"
 ```
 
 ## SSH hardening (проверить, не применять без согласования)
 
 ```bash
 # Проверить текущие настройки:
-ssh root@192.168.1.1 "grep -E '^PermitRootLogin|^PasswordAuthentication|^Port|^PubkeyAuthentication' /etc/ssh/sshd_config"
+ssh root@192.168.1.202 "grep -E '^PermitRootLogin|^PasswordAuthentication|^Port|^PubkeyAuthentication' /etc/ssh/sshd_config"
 ```
 
 Рекомендации (предложить, не применять без одобрения):
@@ -117,13 +117,13 @@ ssh root@192.168.1.1 "grep -E '^PermitRootLogin|^PasswordAuthentication|^Port|^P
 ### Рост диска
 ```bash
 # Сравнить с прошлой проверкой (из full-time-memory.md)
-ssh root@192.168.1.1 "zfs list -o name,used,avail -H hdd16tb/samba"
+ssh root@192.168.1.202 "zfs list -o name,used,avail -H hdd16tb/samba"
 ```
 
 ### Рост нагрузки
 ```bash
-ssh root@192.168.1.1 "uptime"
-ssh root@192.168.1.1 "sar -u 1 3 2>/dev/null || top -b -n1 | head -5"
+ssh root@192.168.1.202 "uptime"
+ssh root@192.168.1.202 "sar -u 1 3 2>/dev/null || top -b -n1 | head -5"
 ```
 
 ## План еженедельного обслуживания

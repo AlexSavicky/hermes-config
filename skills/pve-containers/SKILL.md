@@ -12,43 +12,43 @@ version: 1.0
 
 ### Список контейнеров
 ```bash
-ssh root@192.168.1.1 "pct list"
+ssh root@192.168.1.202 "pct list"
 ```
 
 ### Статус контейнера
 ```bash
-ssh root@192.168.1.1 "pct status <vmid>"
+ssh root@192.168.1.202 "pct status <vmid>"
 ```
 
 ### Запуск / остановка / перезапуск
 ```bash
-ssh root@192.168.1.1 "pct start <vmid>"
-ssh root@192.168.1.1 "pct stop <vmid>"
-ssh root@192.168.1.1 "pct reboot <vmid>"
+ssh root@192.168.1.202 "pct start <vmid>"
+ssh root@192.168.1.202 "pct stop <vmid>"
+ssh root@192.168.1.202 "pct reboot <vmid>"
 ```
 
 ### Выполнить команду внутри контейнера
 ```bash
-ssh root@192.168.1.1 "pct exec <vmid> -- <command>"
+ssh root@192.168.1.202 "pct exec <vmid> -- <command>"
 ```
 
 ### Просмотр конфигурации
 ```bash
-ssh root@192.168.1.1 "pct config <vmid>"
+ssh root@192.168.1.202 "pct config <vmid>"
 ```
 
 ### Просмотр логов контейнера
 ```bash
-ssh root@192.168.1.1 "pct exec <vmid> -- journalctl -n 50 --no-pager"
+ssh root@192.168.1.202 "pct exec <vmid> -- journalctl -n 50 --no-pager"
 ```
 
 ## Известные контейнеры
-- CT 100 jellyfin (192.168.1.11) — CRITICAL, не перезагружать без предупреждения
-- CT 102 qbittorrent (192.168.1.12)
-- CT 103 sonarr (192.168.1.13)
+- CT 100 jellyfin (192.168.1.2021) — CRITICAL, не перезагружать без предупреждения
+- CT 102 qbittorrent (192.168.1.2022)
+- CT 103 sonarr (192.168.1.2023)
 - CT 104 jackett (DHCP)
-- CT 105 radarr (192.168.1.14)
-- CT 106 hermes (192.168.1.15) — я сам
+- CT 105 radarr (192.168.1.2024)
+- CT 106 hermes (192.168.1.2025) — я сам
 
 ## Best Practices
 - Перед остановкой критичного контейнера — предупредить владельца

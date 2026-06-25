@@ -12,24 +12,24 @@ version: 1.0
 
 ### Нагрузка и память
 ```bash
-ssh root@192.168.1.1 "uptime"
-ssh root@192.168.1.1 "free -h"
-ssh root@192.168.1.1 "df -h | grep -v tmpfs"
+ssh root@192.168.1.202 "uptime"
+ssh root@192.168.1.202 "free -h"
+ssh root@192.168.1.202 "df -h | grep -v tmpfs"
 ```
 
 ### Ошибки в журнале
 ```bash
-ssh root@192.168.1.1 "journalctl -p err --since '24 hours ago' --no-pager | tail -50"
+ssh root@192.168.1.202 "journalctl -p err --since '24 hours ago' --no-pager | tail -50"
 ```
 
 ### Сервисы на хосте
 ```bash
-ssh root@192.168.1.1 "systemctl is-active smbd pve-tgbot pvedaemon pveproxy"
+ssh root@192.168.1.202 "systemctl is-active smbd pve-tgbot pvedaemon pveproxy"
 ```
 
 ### Температуры CPU
 ```bash
-ssh root@192.168.1.1 "sensors | grep -E 'Core|Package|temp'"
+ssh root@192.168.1.202 "sensors | grep -E 'Core|Package|temp'"
 ```
 
 ## Обслуживание
@@ -37,26 +37,26 @@ ssh root@192.168.1.1 "sensors | grep -E 'Core|Package|temp'"
 ### Проверка обновлений (dry-run)
 ```bash
 # На хосте:
-ssh root@192.168.1.1 "apt update && apt list --upgradable 2>/dev/null | grep -v 'Listing'"
+ssh root@192.168.1.202 "apt update && apt list --upgradable 2>/dev/null | grep -v 'Listing'"
 
 # В контейнере:
-ssh root@192.168.1.1 "pct exec <vmid> -- apt update && pct exec <vmid> -- apt list --upgradable 2>/dev/null"
+ssh root@192.168.1.202 "pct exec <vmid> -- apt update && pct exec <vmid> -- apt list --upgradable 2>/dev/null"
 ```
 
 ### Очистка пакетов
 ```bash
-ssh root@192.168.1.1 "apt autoremove --dry-run"
-ssh root@192.168.1.1 "apt autoclean"
+ssh root@192.168.1.202 "apt autoremove --dry-run"
+ssh root@192.168.1.202 "apt autoclean"
 ```
 
 ### Ротация логов
 ```bash
-ssh root@192.168.1.1 "journalctl --vacuum-time=7d"
+ssh root@192.168.1.202 "journalctl --vacuum-time=7d"
 ```
 
 ### Проверка перезагрузки после обновлений
 ```bash
-ssh root@192.168.1.1 "test -f /var/run/reboot-required && echo 'REBOOT REQUIRED' || echo 'no reboot needed'"
+ssh root@192.168.1.202 "test -f /var/run/reboot-required && echo 'REBOOT REQUIRED' || echo 'no reboot needed'"
 ```
 
 ## Best Practices

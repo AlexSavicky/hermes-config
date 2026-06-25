@@ -16,32 +16,32 @@ version: 1.0
 
 ### Статус всех пулов
 ```bash
-ssh root@192.168.1.1 "zpool status"
+ssh root@192.168.1.202 "zpool status"
 ```
 
 ### Сводка по использованию
 ```bash
-ssh root@192.168.1.1 "zpool list"
-ssh root@192.168.1.1 "zfs list -o name,used,avail,refer,mountpoint"
+ssh root@192.168.1.202 "zpool list"
+ssh root@192.168.1.202 "zfs list -o name,used,avail,refer,mountpoint"
 ```
 
 ### Проверка ошибок
 ```bash
-ssh root@192.168.1.1 "zpool status | grep -E 'errors:|state:'"
+ssh root@192.168.1.202 "zpool status | grep -E 'errors:|state:'"
 ```
 
 ### История scrub
 ```bash
-ssh root@192.168.1.1 "zpool status | grep -A2 'scan:'"
+ssh root@192.168.1.202 "zpool status | grep -A2 'scan:'"
 ```
 
 ### SMART дисков
 ```bash
-ssh root@192.168.1.1 "smartctl -A /dev/sda | grep -E 'Temperature|Reallocated|Pending|Uncorrectable'"
-ssh root@192.168.1.1 "smartctl -A /dev/sdb | grep -E 'Temperature|Reallocated|Pending|Uncorrectable'"
-ssh root@192.168.1.1 "smartctl -A /dev/sdc | grep -E 'Temperature|Reallocated|Pending|Uncorrectable'"
-ssh root@192.168.1.1 "smartctl -A /dev/nvme0 | grep 'Temperature:'"
-ssh root@192.168.1.1 "smartctl -A /dev/nvme1 | grep 'Temperature:'"
+ssh root@192.168.1.202 "smartctl -A /dev/sda | grep -E 'Temperature|Reallocated|Pending|Uncorrectable'"
+ssh root@192.168.1.202 "smartctl -A /dev/sdb | grep -E 'Temperature|Reallocated|Pending|Uncorrectable'"
+ssh root@192.168.1.202 "smartctl -A /dev/sdc | grep -E 'Temperature|Reallocated|Pending|Uncorrectable'"
+ssh root@192.168.1.202 "smartctl -A /dev/nvme0 | grep 'Temperature:'"
+ssh root@192.168.1.202 "smartctl -A /dev/nvme1 | grep 'Temperature:'"
 ```
 
 ## Пороги алертов

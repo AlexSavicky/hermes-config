@@ -11,7 +11,7 @@
 
 ## Proxmox Host
 - Адрес: 192.168.1.1 (шлюз vmbr0)
-- Доступ из CT 106 (hermes): `ssh root@192.168.1.1` — настроить ключ
+- Доступ из CT 106 (hermes): `ssh root@192.168.1.202` — настроить ключ
 - Версия: Proxmox VE (ZFS)
 - CPU: с CPU pinning на jellyfin (ядра 0,2,4,6), остальные — общие
 
